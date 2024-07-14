@@ -1,0 +1,100 @@
+<mvc:View
+    controllerName="fioritodoapp.controller.Main"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.f"
+    displayBlock="true"
+    xmlns="sap.m"
+>
+    <Page
+        id="page"
+        title="{i18n>title}"
+    >
+        <customHeader>
+            <f:ShellBar title="Todo App" />
+        </customHeader>
+        <content>
+            <f:DynamicPage>
+                <f:header>
+                    <f:DynamicPageHeader pinnable="false">
+                        <Input
+                            value="{todo>/newTodo}"
+                            placeholder="Add todo item"
+                            change=".addTodo"
+                        />
+                    </f:DynamicPageHeader>
+                </f:header>
+                <f:content>
+                    <List
+                        id="todoList"
+                        items="{
+                            path: 'todo>/todos'
+                        }"
+                        mode="None"
+                        growing="true"
+                        growingScrollToLoad="true"
+                        showNoData="false"
+                        showSeparators="None"
+                    >
+                        <headerToolbar>
+                            <OverflowToolbar class="sapUiSizeCompact">
+                                <ToolbarSpacer />
+                                <SearchField
+                                    liveChange=".onSearch"
+                                    width="20rem"
+                                />
+                                <SegmentedButton
+                                    selectedKey="all"
+                                    selectionChange=".onFilter"
+                                    class="sapMSegmentedButtonNoAutoWidth"
+                                >
+                                    <items>
+                                        <SegmentedButtonItem
+                                            text="All"
+                                            key="all"
+                                        />
+                                        <SegmentedButtonItem
+                                            text="Active"
+                                            key="active"
+                                        />
+                                        <SegmentedButtonItem
+                                            text="Completed"
+                                            key="completed"
+                                        />
+                                    </items>
+                                </SegmentedButton>
+                                <Button
+                                    enabled="{todo>/itemsRemovable}"
+                                    icon="sap-icon://delete"
+                                    text="Clear completed"
+                                    press=".onClearCompleted"
+                                    type="Reject"
+                                />
+                            </OverflowToolbar>
+                        </headerToolbar>
+                        <infoToolbar>
+                            <OverflowToolbar
+                                visible="{= ${todo>/filterText} !== '' }"
+                                active="false"
+                            >
+                                <Label text="{todo>/filterText}" />
+                            </OverflowToolbar>
+                        </infoToolbar>
+                        <CustomListItem>
+                            <HBox justifyContent="SpaceBetween">
+                                <HBox alignItems="Center">
+                                    <CheckBox selected="{todo>completed}" />
+                                    <Text text="{todo>title}" />
+                                </HBox>
+                                <Button
+                                    icon="sap-icon://delete"
+                                    press="onOpenDelete"
+                                />
+                            </HBox>
+                        </CustomListItem>
+                    </List>
+                </f:content>
+            </f:DynamicPage>
+        </content>
+    </Page>
+</mvc:View>
